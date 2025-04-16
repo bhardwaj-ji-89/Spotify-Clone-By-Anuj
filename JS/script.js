@@ -135,11 +135,11 @@ async function displayAlbum() {
         const e = array[index];
 
 
-        if (e.href.includes("/songs")) {
+        if (e.href.includes("/songs") && !e.href.includes(".htaccess")) {
             let folder = e.href.split("/").slice(-2)[0]
 
             // get meta data of folder
-            let a = await fetch(`http://127.0.0.1:3000/songs/${folder}/info.json`);
+            let a = await fetch(`/songs/${folder}/info.json`);
             let response = await a.json();
             console.log(response)
             cardcontainer.innerHTML = cardcontainer.innerHTML + ` <div data-folder="${folder}" class="card ">
@@ -244,14 +244,14 @@ async function main() {
     // add an evnt to volume
     document.querySelector(".range").getElementsByTagName("input")[0].addEventListener("change", (e) => {
         currentSong.volume = parseInt(e.target.value) / 100
-        if (currentSong.volume >0 ){
-            document.querySelector(".volume>img").src =  document.querySelector(".volume>img").src.replace("img/mute.svg", "img/volume.svg")
+        if (currentSong.volume > 0) {
+            document.querySelector(".volume>img").src = document.querySelector(".volume>img").src.replace("img/mute.svg", "img/volume.svg")
         }
     })
 
 
     // add event to mute the track
-    document.querySelector(".volume").addEventListener("click", e => {
+    document.querySelector(".volume>img").addEventListener("click", e => {
         console.log(e.target)
         if (e.target.src.includes("volume.svg")) {
             e.target.src = e.target.src.replace("img/volume.svg", "img/mute.svg")
@@ -263,6 +263,7 @@ async function main() {
             currentSong.volume = .10;
             document.querySelector(".range").getElementsByTagName("input")[0].value = 10;
         }
+
     })
 
 
